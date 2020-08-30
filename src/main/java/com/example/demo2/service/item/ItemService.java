@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -19,8 +20,9 @@ public class ItemService {
         return itemRepository.save(item);
     }
 
-    public Optional<Item> getOne(Long id) {
-        return itemRepository.findById(id);
+    public Item getOne(Long id) {
+        return itemRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException());
     }
 
     public List<Item> findAll() {

@@ -1,5 +1,7 @@
 package com.example.demo2.controller.item;
 
+import com.example.demo2.controller.item.dto.ItemCreateRequest;
+import com.example.demo2.controller.item.dto.ItemUpdateRequest;
 import com.example.demo2.domain.item.Item;
 import com.example.demo2.service.item.ItemService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -23,13 +26,8 @@ public class ItemController {
 
     @GetMapping("/items/{id}")
     public ResponseEntity getItem(@PathVariable Long id) {
-        Optional<Item> item = itemService.getOne(id);
-        if (item.isPresent()) {
-            return ResponseEntity.ok(item);
-        } else {
-            return (ResponseEntity) ResponseEntity.notFound();
-        }
-
+        Item item = itemService.getOne(id);
+        return ResponseEntity.ok(item);
     }
 
     @GetMapping("/items")
@@ -46,7 +44,7 @@ public class ItemController {
 
     // TODO partial update
     @PutMapping("/items/{id}")
-    public ResponseEntity<Item> updateItem(@PathVariable Long id, @RequestBody Item request) {
+    public ResponseEntity<Item> updateItem(@PathVariable Long id, @RequestBody ItemUpdateRequest request) {
         Item item = itemService.update(id, request.getName(), request.getQuantity(), request.getPrice());
         return ResponseEntity.ok(item);
     }

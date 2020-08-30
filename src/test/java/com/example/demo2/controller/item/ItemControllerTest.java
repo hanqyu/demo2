@@ -1,5 +1,6 @@
 package com.example.demo2.controller.item;
 
+import com.example.demo2.controller.item.dto.ItemCreateRequest;
 import com.example.demo2.domain.item.Item;
 import com.example.demo2.domain.item.ItemRepository;
 import org.junit.jupiter.api.BeforeEach;

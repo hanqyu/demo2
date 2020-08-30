@@ -1,4 +1,4 @@
-package com.example.demo2.controller.item;
+package com.example.demo2.controller.item.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
