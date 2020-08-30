@@ -8,7 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter @NoArgsConstructor(access = AccessLevel.PACKAGE)  // TODO
+@Getter
+@NoArgsConstructor(access = AccessLevel.PACKAGE)  // TODO
 public class Item {
 
     @Id
@@ -30,4 +31,15 @@ public class Item {
         this.price = price;
     }
 
+    public void updateItem(String name, Integer quantity, Long price) {
+        if (!this.name.equals(name)) {
+            this.name = name;
+        }
+        if (!this.quantity.equals(quantity)) {
+            this.quantity = quantity;
+        }
+        if (!this.price.equals(price)) {
+            this.price = price;
+        }
+    }
 }

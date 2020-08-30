@@ -2,31 +2,38 @@ package com.example.demo2.service.item;
 
 import com.example.demo2.domain.item.Item;
 import com.example.demo2.domain.item.ItemRepository;
+import com.example.demo2.service.item.converter.ItemConverter;
+import com.example.demo2.service.item.dto.ItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private final ItemConverter itemConverter;
 
-    public Item create(String name, Integer quantity, Long price) {
-        Item item = new Item(name, quantity, price);
-        return itemRepository.save(item);
+    public ItemDto create(String name, Integer quantity, Long price) {
+        Item savedItem = itemRepository.save(new Item(name, quantity, price));
+        return itemConverter.convertToDto(savedItem);
     }
 
-    public Item getOne(Long id) {
-        return itemRepository.findById(id)
+    public ItemDto getOne(Long id) {
+        Item item = itemRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException());
+        return itemConverter.convertToDto(item);
     }
 
-    public List<Item> findAll() {
-        return itemRepository.findAll();
+    public List<ItemDto> findAll() {
+        return itemRepository.findAll()
+                .stream()
+                .map(item -> itemConverter.convertToDto(item))
+                .collect(Collectors.toList());
     }
 
     public void deleteById(long id) {
@@ -35,11 +42,10 @@ public class ItemService {
 
 
     // TODO partial update
-    public Item update(Long id, String name, Integer quantity, Long price) {
-        Item item = itemRepository.findById(id).get();  // TODO 더 나은방법?
-        item.setName(name);
-        item.setQuantity(quantity);
-        item.setPrice(price);
-        return itemRepository.save(item);
+    public ItemDto update(Long id, String name, Integer quantity, Long price) {
+        Item item = itemRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException());
+        item.updateItem(name, quantity, price);
+        return itemConverter.convertToDto(item);
     }
 }
