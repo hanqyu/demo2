@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PACKAGE)  // TODO
+@NoArgsConstructor(access = AccessLevel.PRIVATE)  // TODO
 public class Item {
 
     @Id
